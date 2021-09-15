@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" metadata-complete="true" version="3.0">
+	<display-name>SWMApiService</display-name>
+
+	<servlet>
+		<servlet-name>springrest</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springrest</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>resteasy.resources</param-name>
+		<param-value>com.resteasy.series.upload.download.service.FileServiceImpl</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
+		<url-pattern>/resteasy/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/resteasy/*</param-value>
+	</context-param>
+	<!-- <filter> <filter-name>csrfFilter</filter-name> <filter-class>com.trinity.web.security.CSRFTokenFilter</filter-class> 
+		<init-param> <param-name>csrfTokenName</param-name> <param-value>csrf</param-value> 
+		</init-param> <init-param> <param-name>cookieMaxAge</param-name> <param-value>18000</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>csrfFilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+	<error-page>
+		<error-code>400</error-code>
+		<location>/badRequest-page.html</location>
+	</error-page>
+	<error-page>
+		<error-code>401</error-code>
+		<location>/unauthorized-page.html</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/forbidden-page.html</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/custom-not-found-page.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/custom-internal-server-page.html</location>
+	</error-page>
+	<!-- saml -->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value> org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			com.trinity.web.Util.VaultProperties
+			com.trinity.swm.swmapiservice.configuration.sso.SecurityConfig
+		</param-value>
+	</context-param>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<!-- saml -->
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/error.jsp</location>
+	</error-page>
+	<filter>
+	  	<description>
+	  	</description>
+	  	<display-name>UserCheckFilter</display-name>
+	  	<filter-name>UserCheckFilter</filter-name>
+	  	<filter-class>com.trinity.web.security.UserCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+    	<filter-name>UserCheckFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>

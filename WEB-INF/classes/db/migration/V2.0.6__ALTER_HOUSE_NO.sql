@@ -1,0 +1,1 @@
+ALTER TABLE admin.config_bin_master ALTER COLUMN cbm_house_no VARCHAR (250) NULL;

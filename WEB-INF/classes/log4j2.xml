@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+<Properties>
+        <Property name="log-path">D:/home/SWM_Configuration/SWM_Log</Property>
+    </Properties>
+
+	<Appenders>
+		<!-- <Socket name="socket" host="10.1.0.7" port="1432"> -->
+		<!-- <Socket name="socket" host="192.168.8.204" port="1432">
+			<JsonLayout compact="true" eventEol="true">
+				<KeyValuePair key="@timestamp"
+					value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}" />
+				<KeyValuePair key="application" value="SWM_API_logs" />
+			</JsonLayout>
+		</Socket> -->
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%-5level %d{yyyy-MM-dd HH:mm:ss} %C %L :- %msg%n " />
+		</Console>
+		<RollingFile name="file-log" fileName="${log-path}/application-log.log"
+                     filePattern="${log-path}/%d{yyyy}/%d{MMM}/%d{dd}/application-log-%i.log.gz">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm} (%t) %c %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+        </RollingFile>
+	</Appenders>
+	<Loggers>
+		<AsyncLogger name="com.trinity" level="ALL" additivity="false" includeLocation="true">
+			<appender-ref ref="console" />
+			<appender-ref ref="socket" />
+			<appender-ref ref="file-log" />
+		</AsyncLogger>
+		<AsyncRoot level="info" additivity="false"  includeLocation="true">
+			<appender-ref ref="console" />
+			<appender-ref ref="socket" />
+			<appender-ref ref="file-log" />
+		</AsyncRoot>
+	</Loggers>
+	<!-- <Loggers>
+        <logger name="org.trinity.admin" level="debug" additivity="false">
+            <appender-ref ref="console" />
+            <appender-ref ref="socket" />
+        </logger>
+        <Root level="error" additivity="false">
+                <appender-ref ref="console" />
+            <appender-ref ref="socket" />
+        </Root>
+    </Loggers> -->
+</Configuration> 

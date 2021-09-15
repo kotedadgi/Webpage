@@ -1,0 +1,1 @@
+DELETE from [admin].[config_bin_type] where [cbt_id_pk]<3025

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/task 
+        http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+    
+     <task:annotation-driven></task:annotation-driven>
+     <task:scheduler id="schedular"/>
+	<context:component-scan base-package="com.trinity" />
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler/>
+	<!-- Authenticate each request before processing based on host/user-agent -->
+	<mvc:interceptors>
+		<bean id="sessionInterceptor" class="com.trinity.web.security.SessionHandlerInterceptor" />
+	</mvc:interceptors>
+
+	<!-- To  convert JSON to Object and vice versa -->
+    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    </bean>    
+  <!-- <context:property-placeholder location="classpath:/config.properties" /> -->
+  	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="268435456" />
+	</bean>
+	<bean class="com.trinity.web.Util.VaultProperties"></bean>
+  </beans>
